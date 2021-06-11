@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31320.298
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorPwaQwixxGame", "BlazorPwaQwixxGame\BlazorPwaQwixxGame.csproj", "{13EF9044-F984-4E81-8A88-D27BA6A43EDC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3389A5BA-9AB7-4D58-A872-264968F623D0}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{13EF9044-F984-4E81-8A88-D27BA6A43EDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13EF9044-F984-4E81-8A88-D27BA6A43EDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13EF9044-F984-4E81-8A88-D27BA6A43EDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13EF9044-F984-4E81-8A88-D27BA6A43EDC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C8181EF4-C451-40D5-9A60-55B68E4F42E9}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,107 @@
+﻿@page "/"
+
+@inject ResizeListener listener
+@using System.Globalization
+@implements IDisposable
+
+<style>
+    .vertical-wrap{
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-items: stretch;
+        align-content: stretch;
+    }
+
+    .horizontal-wrap{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-around;
+        align-items: center;
+        align-content: stretch;
+    }
+
+    .number-btn {
+        border: none;
+        background: #FFFFFFDA;
+        font-weight: bold;
+        font-size: 3vw;
+        outline: none;
+    }
+
+    .number-btn-checked {
+        border: none;
+        background: #CCC;
+        opacity: 0.9;
+        font-weight: bold;
+        font-size: 3vw;
+        outline: none;
+    }
+</style>
+
+<div class="vertical-wrap" style="height: 100%; width: 100%">
+    @foreach (var item in this.Game.GameRows)
+    {
+        <div class="horizontal-wrap" style="height: 18%; background: @item.Color">
+            @foreach (var number in item.RowNumbers)
+            {
+                <button class="@(number.CanBeToggled ? "number-btn" : "number-btn-checked")" disabled="@(!number.CanBeToggled)" @onclick="number.Toggle"
+                        style="width: @this.SizePixelString; height: @this.SizePixelString;  
+                               border-radius: @((this.Size * 0.1).ToString(CultureInfo.InvariantCulture))px;
+                               color: @item.Color">@(number.Checked ? "X" : number.Number)</button>
+            }
+            
+            <button class="number-btn" style="width: @this.SizePixelString; height: @this.SizePixelString;">X</button>
+        </div>
+    }
+</div>
+
+@code
+{
+    public string SizePixelString => $"{this.Size}px";
+
+    public int Size { get; set; }
+
+    // We can also capture the browser's width / height if needed. We hold the value here.
+    BrowserWindowSize browser = new BrowserWindowSize();
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Subscribe to the OnResized event. This will do work when the browser is resized.
+            listener.OnResized += WindowResized;
+            @*this.CalcSize();*@
+        }
+    }
+
+    void IDisposable.Dispose()
+    {
+        // Always use IDisposable in your component to unsubscribe from the event.
+        // Be a good citizen and leave things how you found them. 
+        // This way event handlers aren't called when nobody is listening.
+        listener.OnResized -= WindowResized;
+    }
+
+    // This method will be called when the window resizes.
+    // It is ONLY called when the user stops dragging the window's edge. (It is already throttled to protect your app from perf. nightmares)
+    async void WindowResized(object? _, BrowserWindowSize window)
+    {
+        // Get the browsers's width / height
+        browser = window;
+        this.CalcSize();
+    }
+
+    private void CalcSize()
+    {
+        var maxPartWidth = (this.browser.Width / 13) - 8;
+        var maxPartHeight = (int)((this.browser.Height * 0.18) - 16);
+
+        this.Size = maxPartWidth < maxPartHeight ? maxPartWidth : maxPartHeight;
+
+        Console.WriteLine($"Size is: {Size}");
+        this.StateHasChanged();
+    }
+}

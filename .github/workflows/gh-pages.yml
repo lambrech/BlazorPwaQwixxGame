@@ -1,0 +1,24 @@
+name: github pages
+
+on:
+  push:
+    branches:
+      - master
+      
+  
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the code
+      - uses: actions/checkout@v2
+      
+      # Install .NET Core SDK
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.100-preview.4.21255.9
+      
+      - uses: proulxsamuel/deploy-blazor-to-gh-pages@master
+        with:
+          project_path: './BlazorPwaQwixxGame/'
