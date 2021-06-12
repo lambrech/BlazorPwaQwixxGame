@@ -214,6 +214,7 @@
             this.GameRows = new List<GameRow>(new[] { redRow, yellowRow, greenRow, blueRow });
 
             this.FailRolls = new List<FailRoll>(new[] { new FailRoll(this), new FailRoll(this), new FailRoll(this), new FailRoll(this) });
+            this.ShowScoreOnDialog = false;
         }
 
         private int CalcTotalScore()

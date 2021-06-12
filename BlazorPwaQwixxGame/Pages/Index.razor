@@ -128,7 +128,7 @@
         <div class="modal-dialog" style="max-width: none" role="document">  
             <div class="modal-content">  
                 <div class="vertical-wrap" style="padding: 3%">
-                    <div class="vertical-wrap" style="align-items: center;">
+                    <div class="vertical-wrap" style="align-items: center; display: @(this.Game.ShowScoreOnDialog ? "flex" : "none")">
                         <div class="vertical-wrap" style="align-items: center; border: 2px solid; padding: 2%; border-radius: @((this.Size * 0.5).ToString(CultureInfo.InvariantCulture))px;">
                             <label style="font-weight: bold; font-size: 3vw; margin: 0">Deine Punktzahl:</label>
                             <label style="font-weight: bold; font-size: 5vw; margin: 0">@this.Game.TotalScore</label>
