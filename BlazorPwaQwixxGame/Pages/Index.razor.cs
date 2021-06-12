@@ -1,10 +1,7 @@
 ﻿namespace BlazorPwaQwixxGame.Pages
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
-    using Microsoft.JSInterop;
 
     public partial class Index
     {
@@ -101,6 +98,8 @@
 
         public bool CanBeClosedByLastNumber => this.RowNumbers.Count(x => x.Checked) > 4;
 
+        public int RowScore => this.CalcRowScore();
+
         public void ToggleClose()
         {
             this.Closed = !this.Closed;
@@ -112,15 +111,13 @@
             this.Game.CheckGameFinished();
         }
 
-        public int RowScore => this.CalcRowScore();
-
         private int CalcRowScore()
         {
             var score = 0;
 
             var checkedNumbers = this.RowNumbers.Where(x => x.Checked).ToList();
 
-            for (int i = 0; i < checkedNumbers.Count; i++)
+            for (var i = 0; i < checkedNumbers.Count; i++)
             {
                 score += i + 1;
             }
@@ -167,6 +164,12 @@
 
         public bool ScoreVisible { get; set; }
 
+        public bool ShowScoreOnDialog { get; set; }
+
+        public int TotalScore => this.CalcTotalScore();
+
+        public int TotalFailScore => this.FailRolls.Count(x => x.Checked) * 5;
+
         public void ToggleScoreVisibility()
         {
             this.ScoreVisible = !this.ScoreVisible;
@@ -174,8 +177,7 @@
 
         public void CheckGameFinished()
         {
-            if (this.FailRolls.Count(x => x.Checked) == 4
-            || this.GameRows.Count(x => x.Closed) > 1)
+            if ((this.FailRolls.Count(x => x.Checked) == 4) || (this.GameRows.Count(x => x.Closed) > 1))
             {
                 this.OpenDialog(true);
             }
@@ -201,20 +203,6 @@
             }
         }
 
-        public bool ShowScoreOnDialog { get; set; }
-
-        public int TotalScore => this.CalcTotalScore();
-
-        public int TotalFailScore => this.FailRolls.Count(x => x.Checked) * 5;
-
-        private int CalcTotalScore()
-        {
-            var sum = this.GameRows.Sum(x => x.RowScore);
-            var failRolls = this.TotalFailScore;
-
-            return sum - failRolls;
-        }
-
         public void ResetGame()
         {
             var redRow = new GameRow(this, "Red", new List<int>(new[] { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }));
@@ -225,6 +213,14 @@
             this.GameRows = new List<GameRow>(new[] { redRow, yellowRow, greenRow, blueRow });
 
             this.FailRolls = new List<FailRoll>(new[] { new FailRoll(this), new FailRoll(this), new FailRoll(this), new FailRoll(this) });
+        }
+
+        private int CalcTotalScore()
+        {
+            var sum = this.GameRows.Sum(x => x.RowScore);
+            var failRolls = this.TotalFailScore;
+
+            return sum - failRolls;
         }
     }
 }

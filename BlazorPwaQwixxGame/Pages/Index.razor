@@ -60,13 +60,13 @@
             @foreach (var number in gameRow.RowNumbers)
             {
                 <button class="default-game-btn @(number.CanBeToggled ? "number-btn" : "number-btn-disabled")" disabled="@(!number.CanBeToggled)" @onclick="number.Toggle"
-                        style="width: @this.SizePixelString; height: @this.SizePixelString;  
+                        style="width: @(this.Size)px; height: @(this.Size)px;  
                                border-radius: @((this.Size * 0.1).ToString(CultureInfo.InvariantCulture))px;
                                color: @(!number.CanBeToggled ? "Gray" : gameRow.Color)">@(number.Checked ? "X" : number.Number)</button>
             }
             
             <button class="default-game-btn number-btn"  @onclick="gameRow.ToggleClose"
-                    style="width: @this.SizePixelString; height: @this.SizePixelString; border-radius: @((this.Size * 0.5).ToString(CultureInfo.InvariantCulture))px; color: @gameRow.Color">@(gameRow.Closed ? "X" : "")</button>
+                    style="width: @(this.Size)px; height: @(this.Size)px; border-radius: @((this.Size * 0.5).ToString(CultureInfo.InvariantCulture))px; color: @gameRow.Color">@(gameRow.Closed ? "X" : "")</button>
         </div>
             }
     
@@ -141,12 +141,10 @@
 
 @code
 {
-    public string SizePixelString => $"{this.Size}px";
-
     public int Size { get; set; }
 
     // We can also capture the browser's width / height if needed. We hold the value here.
-    BrowserWindowSize browser = new BrowserWindowSize();
+    BrowserWindowSize browser = new ();
 
     protected override void OnAfterRender(bool firstRender)
     {
