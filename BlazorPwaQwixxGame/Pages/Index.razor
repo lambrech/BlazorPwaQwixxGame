@@ -66,7 +66,7 @@
             }
             
             <button class="default-game-btn number-btn"  @onclick="gameRow.ToggleClose"
-                    style="width: @this.SizePixelString; height: @this.SizePixelString; border-radius: @((this.Size * 0.1).ToString(CultureInfo.InvariantCulture))px;">X</button>
+                    style="width: @this.SizePixelString; height: @this.SizePixelString; border-radius: @((this.Size * 0.1).ToString(CultureInfo.InvariantCulture))px; color: @gameRow.Color">@(gameRow.Closed ? "X" : "")</button>
         </div>
             }
     
