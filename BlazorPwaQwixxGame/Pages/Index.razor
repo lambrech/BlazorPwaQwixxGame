@@ -66,35 +66,35 @@
             }
             
             <button class="default-game-btn number-btn"  @onclick="gameRow.ToggleClose"
-                    style="width: @this.SizePixelString; height: @this.SizePixelString; border-radius: @((this.Size * 0.1).ToString(CultureInfo.InvariantCulture))px; color: @gameRow.Color">@(gameRow.Closed ? "X" : "")</button>
+                    style="width: @this.SizePixelString; height: @this.SizePixelString; border-radius: @((this.Size * 0.5).ToString(CultureInfo.InvariantCulture))px; color: @gameRow.Color">@(gameRow.Closed ? "X" : "")</button>
         </div>
             }
     
     <div class="horizontal-wrap" style="flex: auto;">
         @*Score*@
-        <div class="horizontal-wrap" style="background: aquamarine; width: 50%; height: 100%; justify-content: flex-start">
+        <div class="horizontal-wrap" style="width: 50%; height: 100%; justify-content: flex-start">
             @foreach (var gameRow in this.Game.GameRows)
             {
                 <label class="default-label score-container-label"
-                       style="width: @((this.Size * 1.1).ToString(CultureInfo.InvariantCulture))px; height: @((this.Size * 0.8).ToString(CultureInfo.InvariantCulture))px; border-radius: @((this.Size * 0.1).ToString(CultureInfo.InvariantCulture))px; border-color: @gameRow.Color">@(this.Game.ScoreVisible ? gameRow.RowScore : "?")</label>
+                       style="width: @((this.Size * 1.1).ToString(CultureInfo.InvariantCulture))px; height: @((this.Size * 0.8).ToString(CultureInfo.InvariantCulture))px; border-radius: @((this.Size * 0.15).ToString(CultureInfo.InvariantCulture))px; border-color: @gameRow.Color">@(this.Game.ScoreVisible ? gameRow.RowScore : "?")</label>
             }
             <label class="default-label">-</label>
             <label class="default-label score-container-label"
-                   style="width: @((this.Size * 1.1).ToString(CultureInfo.InvariantCulture))px; height: @((this.Size * 0.8).ToString(CultureInfo.InvariantCulture))px; border-radius: @((this.Size * 0.1).ToString(CultureInfo.InvariantCulture))px; border-color: black">@(this.Game.ScoreVisible ? this.Game.TotalFailScore : "?")</label>
+                   style="width: @((this.Size * 1.1).ToString(CultureInfo.InvariantCulture))px; height: @((this.Size * 0.8).ToString(CultureInfo.InvariantCulture))px; border-radius: @((this.Size * 0.15).ToString(CultureInfo.InvariantCulture))px; border-color: black">@(this.Game.ScoreVisible ? this.Game.TotalFailScore : "?")</label>
             <label class="default-label">=</label>
             <label class="default-label score-container-label"
-                   style="width: @((this.Size * 1.2).ToString(CultureInfo.InvariantCulture))px; height: @((this.Size * 0.8).ToString(CultureInfo.InvariantCulture))px; border-radius: @((this.Size * 0.1).ToString(CultureInfo.InvariantCulture))px; border-color: black"
+                   style="width: @((this.Size * 1.2).ToString(CultureInfo.InvariantCulture))px; height: @((this.Size * 0.8).ToString(CultureInfo.InvariantCulture))px; border-radius: @((this.Size * 0.15).ToString(CultureInfo.InvariantCulture))px; border-color: black"
                    @onclick="this.Game.ToggleScoreVisibility">@(this.Game.ScoreVisible ? this.Game.TotalScore : "?")</label>
         </div>
 
         @*Game Options*@
-        <div class="vertical-wrap" style="background: wheat; flex: auto; height: 100%; justify-content: space-evenly; align-items: center">
-            <button @onclick="this.Game.ResetGame">Reset</button>
-            <button @onclick="() => { this.Game.ShowDialog = true; }">Finish</button>
+        <div class="vertical-wrap" style="flex: auto; height: 100%; justify-content: space-evenly; align-items: center">
+            <button class="btn btn-outline-secondary btn-sm" style="font-size: 2.5vw; border-radius: @((this.Size * 0.15).ToString(CultureInfo.InvariantCulture))px;" @onclick="@(() => { this.Game.OpenDialog(true); })">Fertig</button>
+            <button class="btn btn-outline-secondary btn-sm" style="font-size: 2.5vw; border-radius: @((this.Size * 0.15).ToString(CultureInfo.InvariantCulture))px;" @onclick="@(() => { this.Game.OpenDialog(false); })">Zurücksetzen</button>
         </div>
 
         @*Fehlwürfe*@
-        <div class="vertical-wrap" style="background: brown; width: 20%; height: 100%; position: relative">
+        <div class="vertical-wrap" style="width: 20%; height: 100%; position: relative">
             <div style="position: absolute; width: 100%; display: flex; justify-content: center; margin-top: @((this.Size * 1.25).ToString(CultureInfo.InvariantCulture))px">
                 <label style="margin: 0; font-size: 2vw;">Fehlwürfe</label>
             </div>
@@ -112,24 +112,32 @@
 
 @if (this.Game.ShowDialog)  
 {  
-    <div style="position: absolute; height: 100%; width: 100%; top: 0; left: 0; background: black; z-index: 10; opacity: 0.4"></div>
+   <div style="position: absolute; height: 100%; width: 100%; top: 0; left: 0; background: black; z-index: 10; opacity: 0.4"></div>
 
-   <div class="modal fade show d-block" id="exampleModal" tabindex="-1" role="dialog">  
-    <div class="modal-dialog" role="document">  
-        <div class="modal-content">  
-            <div class="modal-body">  
-                <p>Deine Punktzahl:</p>
-                <p>@this.Game.TotalScore</p>
-                
-                <p></p>
-                <p>Spiel zurücksetzen?</p>
-                <button class="btn btn-primary" @onclick="@(() => { this.Game.ResetGame(); this.Game.ShowDialog = false;})">Ja</button>
-                <button class="btn btn-primary" @onclick="@(() => { this.Game.ShowDialog = false;})">Nein</button>
+   <div class="horizontal-wrap" style="position: absolute; height: 100%; width: 100%; top: 0; left: 0; justify-content: center;">
+       <div class="modal fade show d-block" style="max-width: 90%; position: unset; width: 70%; height: auto" tabindex="-1" role="dialog">  
+        <div class="modal-dialog" style="max-width: none" role="document">  
+            <div class="modal-content">  
+                <div class="vertical-wrap" style="padding: 3%">
+                    <div class="vertical-wrap" style="align-items: center;">
+                        <div class="vertical-wrap" style="align-items: center; border: 2px solid; padding: 2%; border-radius: @((this.Size * 0.5).ToString(CultureInfo.InvariantCulture))px;">
+                            <label style="font-weight: bold; font-size: 3vw; margin: 0">Deine Punktzahl:</label>
+                            <label style="font-weight: bold; font-size: 5vw; margin: 0">@this.Game.TotalScore</label>
+                        </div>
+                    </div>
+                    <div class="vertical-wrap" style="align-items: center; margin: 2%; margin-top: 3%">
+                        <label style="font-weight: bold; font-size: 3vw; white-space: nowrap; margin: 2%;">Möchtest du alle Eingaben zurücksetzen?</label>
+                        <div class="horizontal-wrap" style="width: 30%">
+                            <button class="btn btn-outline-primary btn-sm" style="width: 40%; font-size: 2vw; border-radius: @((this.Size * 0.1).ToString(CultureInfo.InvariantCulture))px;" @onclick="@(() => { this.Game.CloseDialog(true); })">Ja</button>
+                            <button class="btn btn-outline-primary btn-sm" style="width: 40%; font-size: 2vw; border-radius: @((this.Size * 0.1).ToString(CultureInfo.InvariantCulture))px;" @onclick="@(() => { this.Game.CloseDialog(false); })">Nein</button>
+                        </div>
+                    </div>
+                </div>  
             </div>  
         </div>  
-    </div>  
-</div>  
-}
+       </div>  
+   </div>
+   }
 
 @code
 {

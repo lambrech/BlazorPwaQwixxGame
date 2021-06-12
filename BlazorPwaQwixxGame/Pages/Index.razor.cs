@@ -174,7 +174,34 @@
 
         public void CheckGameFinished()
         {
+            if (this.FailRolls.Count(x => x.Checked) == 4
+            || this.GameRows.Count(x => x.Closed) > 1)
+            {
+                this.OpenDialog(true);
+            }
         }
+
+        public void OpenDialog(bool showScore)
+        {
+            if (showScore)
+            {
+                this.ShowScoreOnDialog = true;
+            }
+
+            this.ShowDialog = true;
+        }
+
+        public void CloseDialog(bool reset)
+        {
+            this.ShowDialog = false;
+
+            if (reset)
+            {
+                this.ResetGame();
+            }
+        }
+
+        public bool ShowScoreOnDialog { get; set; }
 
         public int TotalScore => this.CalcTotalScore();
 
