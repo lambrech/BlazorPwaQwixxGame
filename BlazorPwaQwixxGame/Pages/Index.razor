@@ -9,7 +9,7 @@
         display: flex;
         flex-direction: column;
         flex-wrap: nowrap;
-        justify-content: flex-start;
+        justify-content: center;
         align-items: stretch;
         align-content: stretch;
     }
@@ -23,40 +23,113 @@
         align-content: stretch;
     }
 
-    .number-btn {
+    .default-game-btn {
         border: none;
-        background: #FFFFFFDA;
         font-weight: bold;
         font-size: 3vw;
-        outline: none;
+        outline: none !important;
     }
 
-    .number-btn-checked {
-        border: none;
+    .number-btn {
+        background: #FFFFFFDA;
+    }
+
+    .number-btn-disabled {
         background: #CCC;
         opacity: 0.9;
-        font-weight: bold;
-        font-size: 3vw;
-        outline: none;
     }
+
+    .default-label {
+        font-size: 3vw;
+        margin: 1%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .score-container-label {
+        border: 2px solid;
+    }
+
 </style>
 
 <div class="vertical-wrap" style="height: 100%; width: 100%">
-    @foreach (var item in this.Game.GameRows)
-    {
-        <div class="horizontal-wrap" style="height: 18%; background: @item.Color">
-            @foreach (var number in item.RowNumbers)
+    @foreach (var gameRow in this.Game.GameRows)
+{
+        <div class="horizontal-wrap" style="height: 18%; background: @gameRow.Color">
+            @foreach (var number in gameRow.RowNumbers)
             {
-                <button class="@(number.CanBeToggled ? "number-btn" : "number-btn-checked")" disabled="@(!number.CanBeToggled)" @onclick="number.Toggle"
+                <button class="default-game-btn @(number.CanBeToggled ? "number-btn" : "number-btn-disabled")" disabled="@(!number.CanBeToggled)" @onclick="number.Toggle"
                         style="width: @this.SizePixelString; height: @this.SizePixelString;  
                                border-radius: @((this.Size * 0.1).ToString(CultureInfo.InvariantCulture))px;
-                               color: @item.Color">@(number.Checked ? "X" : number.Number)</button>
+                               color: @(!number.CanBeToggled ? "Gray" : gameRow.Color)">@(number.Checked ? "X" : number.Number)</button>
             }
             
-            <button class="number-btn" style="width: @this.SizePixelString; height: @this.SizePixelString;">X</button>
+            <button class="default-game-btn number-btn"  @onclick="gameRow.ToggleClose"
+                    style="width: @this.SizePixelString; height: @this.SizePixelString; border-radius: @((this.Size * 0.1).ToString(CultureInfo.InvariantCulture))px;">X</button>
         </div>
-    }
+            }
+    
+    <div class="horizontal-wrap" style="flex: auto;">
+        @*Score*@
+        <div class="horizontal-wrap" style="background: aquamarine; width: 50%; height: 100%; justify-content: flex-start">
+            @foreach (var gameRow in this.Game.GameRows)
+            {
+                <label class="default-label score-container-label"
+                       style="width: @((this.Size * 1.1).ToString(CultureInfo.InvariantCulture))px; height: @((this.Size * 0.8).ToString(CultureInfo.InvariantCulture))px; border-radius: @((this.Size * 0.1).ToString(CultureInfo.InvariantCulture))px; border-color: @gameRow.Color">@(this.Game.ScoreVisible ? gameRow.RowScore : "?")</label>
+            }
+            <label class="default-label">-</label>
+            <label class="default-label score-container-label"
+                   style="width: @((this.Size * 1.1).ToString(CultureInfo.InvariantCulture))px; height: @((this.Size * 0.8).ToString(CultureInfo.InvariantCulture))px; border-radius: @((this.Size * 0.1).ToString(CultureInfo.InvariantCulture))px; border-color: black">@(this.Game.ScoreVisible ? this.Game.TotalFailScore : "?")</label>
+            <label class="default-label">=</label>
+            <label class="default-label score-container-label"
+                   style="width: @((this.Size * 1.2).ToString(CultureInfo.InvariantCulture))px; height: @((this.Size * 0.8).ToString(CultureInfo.InvariantCulture))px; border-radius: @((this.Size * 0.1).ToString(CultureInfo.InvariantCulture))px; border-color: black"
+                   @onclick="this.Game.ToggleScoreVisibility">@(this.Game.ScoreVisible ? this.Game.TotalScore : "?")</label>
+        </div>
+
+        @*Game Options*@
+        <div class="vertical-wrap" style="background: wheat; flex: auto; height: 100%; justify-content: space-evenly; align-items: center">
+            <button @onclick="this.Game.ResetGame">Reset</button>
+            <button @onclick="() => { this.Game.ShowDialog = true; }">Finish</button>
+        </div>
+
+        @*Fehlwürfe*@
+        <div class="vertical-wrap" style="background: brown; width: 20%; height: 100%; position: relative">
+            <div style="position: absolute; width: 100%; display: flex; justify-content: center; margin-top: @((this.Size * 1.25).ToString(CultureInfo.InvariantCulture))px">
+                <label style="margin: 0; font-size: 2vw;">Fehlwürfe</label>
+            </div>
+            <div class="horizontal-wrap" style="justify-content: center; z-index: 1">
+                @foreach (var failRoll in this.Game.FailRolls)
+                {
+                    <label class="default-label score-container-label"
+                           style="width: @((this.Size * 0.65).ToString(CultureInfo.InvariantCulture))px; height: @((this.Size * 0.8).ToString(CultureInfo.InvariantCulture))px; border-radius: @((this.Size * 0.1).ToString(CultureInfo.InvariantCulture))px; border-color: black; font-weight: 800"
+                           @onclick="failRoll.ToggleChecked">@(failRoll.Checked ? "X" : "")</label>
+                }
+            </div>
+        </div>
+    </div>
 </div>
+
+@if (this.Game.ShowDialog)  
+{  
+    <div style="position: absolute; height: 100%; width: 100%; top: 0; left: 0; background: black; z-index: 10; opacity: 0.4"></div>
+
+   <div class="modal fade show d-block" id="exampleModal" tabindex="-1" role="dialog">  
+    <div class="modal-dialog" role="document">  
+        <div class="modal-content">  
+            <div class="modal-body">  
+                <p>Deine Punktzahl:</p>
+                <p>@this.Game.TotalScore</p>
+                
+                <p></p>
+                <p>Spiel zurücksetzen?</p>
+                <button class="btn btn-primary" @onclick="@(() => { this.Game.ResetGame(); this.Game.ShowDialog = false;})">Ja</button>
+                <button class="btn btn-primary" @onclick="@(() => { this.Game.ShowDialog = false;})">Nein</button>
+            </div>  
+        </div>  
+    </div>  
+</div>  
+}
 
 @code
 {
@@ -100,8 +173,6 @@
         var maxPartHeight = (int)((this.browser.Height * 0.18) - 16);
 
         this.Size = maxPartWidth < maxPartHeight ? maxPartWidth : maxPartHeight;
-
-        Console.WriteLine($"Size is: {Size}");
         this.StateHasChanged();
     }
 }
