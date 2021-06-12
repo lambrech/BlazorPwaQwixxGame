@@ -106,6 +106,7 @@
             if (!this.Closed)
             {
                 this.GotClosingPoint = false;
+                this.RowNumbers.Last().Checked = false;
             }
 
             this.Game.CheckGameFinished();

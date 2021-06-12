@@ -65,8 +65,17 @@
                                color: @(!number.CanBeToggled ? "Gray" : gameRow.Color)">@(number.Checked ? "X" : number.Number)</button>
             }
             
-            <button class="default-game-btn number-btn"  @onclick="gameRow.ToggleClose"
-                    style="width: @(this.Size)px; height: @(this.Size)px; border-radius: @((this.Size * 0.5).ToString(CultureInfo.InvariantCulture))px; color: @gameRow.Color">@(gameRow.Closed ? "X" : "")</button>
+            <button class="default-game-btn number-btn" @onclick="gameRow.ToggleClose"
+                    style="width: @(this.Size)px; height: @(this.Size)px; border-radius: @((this.Size * 0.5).ToString(CultureInfo.InvariantCulture))px; color: @gameRow.Color; position: relative">
+                @if (gameRow.GotClosingPoint)
+                {
+                    <div>X</div>
+                }
+                else
+                {
+                    <img style="max-width: 50%; max-height: 50%; margin-bottom: 10%; opacity: @(gameRow.Closed ? "1" : "0.3")" src="images/Lock.png"/>
+                }
+            </button>
         </div>
             }
     
