@@ -16,7 +16,6 @@ namespace BlazorPwaQwixxGame
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddScoped<ResizeListener>();
-            //builder.Services.AddResizeListener();
 
             await builder.Build().RunAsync();
         }
