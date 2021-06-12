@@ -175,7 +175,7 @@
 
     // This method will be called when the window resizes.
     // It is ONLY called when the user stops dragging the window's edge. (It is already throttled to protect your app from perf. nightmares)
-    async void WindowResized(object? _, BrowserWindowSize window)
+    void WindowResized(object? _, BrowserWindowSize window)
     {
         // Get the browsers's width / height
         browser = window;
