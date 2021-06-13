@@ -24,6 +24,7 @@
     }
 
     .default-game-btn {
+        padding: 0;
         border: none;
         font-weight: bold;
         font-size: 3vw;
@@ -53,19 +54,19 @@
 
 </style>
 
-<div class="vertical-wrap" style="height: 100%; width: 100%">
+<div class="vertical-wrap" style="height: 100%; width: 100%; padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom) 0;">
     @foreach (var gameRow in this.Game.GameRows)
 {
-        <div class="horizontal-wrap" style="height: 18%; background: @gameRow.Color">
+        <div class="horizontal-wrap" style="height: 18%; background: @gameRow.Color; padding: 0 env(safe-area-inset-right) 0 env(safe-area-inset-left);">
             @foreach (var number in gameRow.RowNumbers)
             {
-                <button class="default-game-btn @(number.CanBeToggled ? "number-btn" : "number-btn-disabled")" disabled="@(!number.CanBeToggled)" @onclick="number.Toggle"
+                <button class="btn default-game-btn @(number.CanBeToggled ? "number-btn" : "number-btn-disabled")" disabled="@(!number.CanBeToggled)" @onclick="number.Toggle"
                         style="width: @(this.Size)px; height: @(this.Size)px;  
                                border-radius: @((this.Size * 0.1).ToString(CultureInfo.InvariantCulture))px;
                                color: @(!number.CanBeToggled ? "Gray" : gameRow.Color)">@(number.Checked ? "X" : number.Number)</button>
             }
             
-            <button class="default-game-btn number-btn" @onclick="gameRow.ToggleClose"
+            <button class="btn default-game-btn number-btn" @onclick="gameRow.ToggleClose"
                     style="width: @(this.Size)px; height: @(this.Size)px; border-radius: @((this.Size * 0.5).ToString(CultureInfo.InvariantCulture))px; color: @gameRow.Color; position: relative">
                 @if (gameRow.GotClosingPoint)
                 {
@@ -79,7 +80,7 @@
         </div>
             }
     
-    <div class="horizontal-wrap" style="flex: auto;">
+    <div class="horizontal-wrap" style="flex: auto; padding: 0 env(safe-area-inset-right) 0 env(safe-area-inset-left);">
         @*Score*@
         <div class="horizontal-wrap" style="width: 50%; height: 100%; justify-content: flex-start">
             @foreach (var gameRow in this.Game.GameRows)
@@ -105,7 +106,7 @@
         @*Fehlwürfe*@
         <div class="vertical-wrap" style="width: 20%; height: 100%; position: relative">
             <div style="position: absolute; width: 100%; display: flex; justify-content: center; margin-top: @((this.Size * 1.25).ToString(CultureInfo.InvariantCulture))px">
-                <label style="margin: 0; font-size: 2vw;">Fehlwürfe</label>
+                <label style="margin: 0; font-size: 2vw;">@((this.Size * 1.25).ToString(CultureInfo.InvariantCulture))px - @this.browser.Width x @this.browser.Height</label>
             </div>
             <div class="horizontal-wrap" style="justify-content: center; z-index: 1">
                 @foreach (var failRoll in this.Game.FailRolls)
