@@ -1,8 +1,5 @@
 ﻿@page "/"
-
-@inject ResizeListener listener
 @using System.Globalization
-@implements IDisposable
 
 <style>
     .vertical-wrap{
@@ -56,7 +53,7 @@
 
 <div class="vertical-wrap" style="height: 100%; width: 100%; padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom) 0;">
     @foreach (var gameRow in this.Game.GameRows)
-{
+    {
         <div class="horizontal-wrap" style="height: 18%; background: @gameRow.Color; padding: 0 env(safe-area-inset-right) 0 env(safe-area-inset-left);">
             @foreach (var number in gameRow.RowNumbers)
             {
@@ -78,15 +75,15 @@
                 }
             </button>
         </div>
-            }
+    }
     
     <div class="horizontal-wrap" style="flex: auto; padding: 0 env(safe-area-inset-right) 0 env(safe-area-inset-left);">
         @*Score*@
         <div class="horizontal-wrap" style="width: 50%; height: 100%; justify-content: flex-start">
-            @foreach (var gameRow in this.Game.GameRows)
+            @foreach (var row in this.Game.GameRows)
             {
                 <label class="default-label score-container-label"
-                       style="width: @((this.Size * 1.1).ToString(CultureInfo.InvariantCulture))px; height: @((this.Size * 0.8).ToString(CultureInfo.InvariantCulture))px; border-radius: @((this.Size * 0.15).ToString(CultureInfo.InvariantCulture))px; border-color: @gameRow.Color">@(this.Game.ScoreVisible ? gameRow.RowScore : "?")</label>
+                       style="width: @((this.Size * 1.1).ToString(CultureInfo.InvariantCulture))px; height: @((this.Size * 0.8).ToString(CultureInfo.InvariantCulture))px; border-radius: @((this.Size * 0.15).ToString(CultureInfo.InvariantCulture))px; border-color: @row.Color">@(this.Game.ScoreVisible ? row.RowScore : "?")</label>
             }
             <label class="default-label">-</label>
             <label class="default-label score-container-label"
@@ -105,8 +102,8 @@
 
         @*Fehlwürfe*@
         <div class="vertical-wrap" style="width: 20%; height: 100%; position: relative">
-            <div style="position: absolute; width: 100%; display: flex; justify-content: center; margin-top: @((this.Size * 1.25).ToString(CultureInfo.InvariantCulture))px">
-                <label style="margin: 0; font-size: 2vw;">@((this.Size * 1.25).ToString(CultureInfo.InvariantCulture))px - @this.browser.Width x @this.browser.Height</label>
+            <div style="position: absolute; width: 100%; display: flex; justify-content: center; top: 70%">
+                <label style="margin: 0; font-size: 2vw;">Fehlwürfe</label>
             </div>
             <div class="horizontal-wrap" style="justify-content: center; z-index: 1">
                 @foreach (var failRoll in this.Game.FailRolls)
@@ -126,69 +123,25 @@
 
    <div class="horizontal-wrap" style="position: absolute; height: 100%; width: 100%; top: 0; left: 0; justify-content: center;">
        <div class="modal fade show d-block" style="max-width: 90%; position: unset; width: 70%; height: auto" tabindex="-1" role="dialog">  
-        <div class="modal-dialog" style="max-width: none" role="document">  
-            <div class="modal-content">  
-                <div class="vertical-wrap" style="padding: 3%">
-                    <div class="vertical-wrap" style="align-items: center; display: @(this.Game.ShowScoreOnDialog ? "flex" : "none")">
-                        <div class="vertical-wrap" style="align-items: center; border: 2px solid; padding: 2%; border-radius: @((this.Size * 0.5).ToString(CultureInfo.InvariantCulture))px;">
-                            <label style="font-weight: bold; font-size: 3vw; margin: 0">Deine Punktzahl:</label>
-                            <label style="font-weight: bold; font-size: 5vw; margin: 0">@this.Game.TotalScore</label>
-                        </div>
-                    </div>
-                    <div class="vertical-wrap" style="align-items: center; margin: 2%; margin-top: 3%">
-                        <label style="font-weight: bold; font-size: 3vw; white-space: nowrap; margin: 2%;">Möchtest du alle Eingaben zurücksetzen?</label>
-                        <div class="horizontal-wrap" style="width: 30%">
-                            <button class="btn btn-outline-primary btn-sm" style="width: 40%; font-size: 2vw; border-radius: @((this.Size * 0.1).ToString(CultureInfo.InvariantCulture))px;" @onclick="@(() => { this.Game.CloseDialog(true); })">Ja</button>
-                            <button class="btn btn-outline-primary btn-sm" style="width: 40%; font-size: 2vw; border-radius: @((this.Size * 0.1).ToString(CultureInfo.InvariantCulture))px;" @onclick="@(() => { this.Game.CloseDialog(false); })">Nein</button>
-                        </div>
-                    </div>
-                </div>  
-            </div>  
-        </div>  
+           <div class="modal-dialog" style="max-width: none" role="document">  
+               <div class="modal-content">  
+                   <div class="vertical-wrap" style="padding: 3%">
+                       <div class="vertical-wrap" style="align-items: center; display: @(this.Game.ShowScoreOnDialog ? "flex" : "none")">
+                           <div class="vertical-wrap" style="align-items: center; border: 2px solid; padding: 2%; border-radius: @((this.Size * 0.5).ToString(CultureInfo.InvariantCulture))px;">
+                               <label style="font-weight: bold; font-size: 3vw; margin: 0">Deine Punktzahl:</label>
+                               <label style="font-weight: bold; font-size: 5vw; margin: 0">@this.Game.TotalScore</label>
+                           </div>
+                       </div>
+                       <div class="vertical-wrap" style="align-items: center; margin: 2%; margin-top: 3%">
+                           <label style="font-weight: bold; font-size: 3vw; white-space: nowrap; margin: 2%;">Möchtest du alle Eingaben zurücksetzen?</label>
+                           <div class="horizontal-wrap" style="width: 30%">
+                               <button class="btn btn-outline-primary btn-sm" style="width: 40%; font-size: 2vw; border-radius: @((this.Size * 0.1).ToString(CultureInfo.InvariantCulture))px;" @onclick="@(() => { this.Game.CloseDialog(true); })">Ja</button>
+                               <button class="btn btn-outline-primary btn-sm" style="width: 40%; font-size: 2vw; border-radius: @((this.Size * 0.1).ToString(CultureInfo.InvariantCulture))px;" @onclick="@(() => { this.Game.CloseDialog(false); })">Nein</button>
+                           </div>
+                       </div>
+                   </div>  
+               </div>  
+           </div>  
        </div>  
    </div>
-   }
-
-@code
-{
-    public int Size { get; set; }
-
-    // We can also capture the browser's width / height if needed. We hold the value here.
-    BrowserWindowSize browser = new ();
-
-    protected override void OnAfterRender(bool firstRender)
-    {
-        if (firstRender)
-        {
-            // Subscribe to the OnResized event. This will do work when the browser is resized.
-            listener.OnResized += WindowResized;
-            @*this.CalcSize();*@
-        }
-    }
-
-    void IDisposable.Dispose()
-    {
-        // Always use IDisposable in your component to unsubscribe from the event.
-        // Be a good citizen and leave things how you found them. 
-        // This way event handlers aren't called when nobody is listening.
-        listener.OnResized -= WindowResized;
-    }
-
-    // This method will be called when the window resizes.
-    // It is ONLY called when the user stops dragging the window's edge. (It is already throttled to protect your app from perf. nightmares)
-    void WindowResized(object? _, BrowserWindowSize window)
-    {
-        // Get the browsers's width / height
-        browser = window;
-        this.CalcSize();
-    }
-
-    private void CalcSize()
-    {
-        var maxPartWidth = (this.browser.Width / 13) - 8;
-        var maxPartHeight = (int)((this.browser.Height * 0.18) - 16);
-
-        this.Size = maxPartWidth < maxPartHeight ? maxPartWidth : maxPartHeight;
-        this.StateHasChanged();
-    }
 }
